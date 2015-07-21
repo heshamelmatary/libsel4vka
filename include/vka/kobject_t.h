@@ -83,6 +83,16 @@ kobject_get_size(kobject_t type, seL4_Word objectSize)
         default:
             return 0;
         }
+#elif defined(CONFIG_ARCH_RISCV)
+        /* RISCV-specific frames. */
+    case KOBJECT_FRAME:
+        switch (objectSize) {
+        case seL4_PageBits:
+        case 22:
+            return objectSize;
+        default:
+            return 0;
+        }
 #elif defined(CONFIG_ARCH_I386)
         /* IA32-specific frames */
     case KOBJECT_FRAME:
@@ -213,6 +223,20 @@ kobject_get_type(kobject_t type, seL4_Word objectSize)
         return seL4_IA32_IOPageTableObject;
 #endif
 #endif
+
+#elif defined(CONFIG_ARCH_RISCV)
+        /* RISCV-specific frames */
+    case KOBJECT_PAGE_DIRECTORY:
+        return seL4_RISCV_PageDirectoryObject;
+    case KOBJECT_PAGE_TABLE:
+        return seL4_RISCV_PageTableObject;
+    case KOBJECT_FRAME:
+        switch (objectSize) {
+        case seL4_PageBits:
+            return seL4_RISCV_4K;
+        default:
+            return -1;
+        }
 #else
 #error "Unknown arch."
 #endif

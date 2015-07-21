@@ -318,6 +318,11 @@ vka_get_object_size(seL4_Word objectType, seL4_Word objectSize)
         return seL4_PageTableBits;
     case seL4_ARM_PageDirectoryObject:
         return seL4_PageDirBits;
+#elif defined (ARCH_RISCV) 
+    case seL4_RISCV_PageTableObject:
+        return seL4_PageTableBits;
+    case seL4_RISCV_PageDirectoryObject:
+        return seL4_PageDirBits;
 #elif defined(ARCH_IA32) /* ARCH_ARM */
 #ifdef CONFIG_X86_64
     case seL4_X64_4K:
@@ -332,7 +337,6 @@ vka_get_object_size(seL4_Word objectType, seL4_Word objectSize)
         return seL4_PageDirPointerTableBits;
     case seL4_X64_PageMapLevel4Object:
         return seL4_PageMapLevel4Bits;
-
 #else /* X86_64 */
         /* IA32specific objects. */
     case seL4_IA32_4K:
